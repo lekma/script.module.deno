@@ -1,0 +1,30 @@
+# Addon Name: Deno JavaScript runtime
+# Addon id: script.module.deno
+msgid ""
+msgstr ""
+"Project-Id-Version: script.module.deno\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgctxt "#30000"
+msgid "Deno JavaScript runtime"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Do you want to install Deno {}?"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Downloading Deno {}..."
+msgstr ""
+
+msgctxt "#30003"
+msgid "Installing Deno {}..."
+msgstr ""
+
+msgctxt "#30004"
+msgid "Deno {} installed."
+msgstr ""
