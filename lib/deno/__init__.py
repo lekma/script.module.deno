@@ -48,11 +48,9 @@ class DenoInstaller(object):
     @classmethod
     def __current__(cls):
         if not cls.__current_version__:
-            cls.__current_version__ = Version(
-                subprocess.check_output(
-                    (f"{cls.__path__}", "eval", "-p", "Deno.version.deno")
-                ).decode("utf-8").strip()
-            )
+            cls.__current_version__ = subprocess.check_output(
+                (f"{cls.__path__}", "eval", "-p", "Deno.version.deno")
+            ).decode("utf-8").strip()
         return cls.__current_version__
 
     @classmethod
@@ -61,9 +59,7 @@ class DenoInstaller(object):
             with urllib.request.urlopen(
                 cls.__url__._replace(path="release-latest.txt").geturl()
             ) as response:
-                cls.__latest_version__ = Version(
-                    response.read().decode("utf-8").strip()
-                )
+                cls.__latest_version__ =  response.read().decode("utf-8").strip()
         return cls.__latest_version__
 
     @classmethod
@@ -88,9 +84,11 @@ class DenoInstaller(object):
     }
 
     @classmethod
-    def __target__(cls, system, machine):
-        system = cls.__systems__[system]
-        machine = system.get("machines", {}).get(machine, machine)
+    def __target__(cls):
+        system = cls.__systems__[platform.system()]
+        machine = system.get("machines", {}).get(
+            (machine := platform.machine()), machine
+        )
         return f"deno-{machine}-{system['suffix']}"
 
     @classmethod
@@ -101,9 +99,8 @@ class DenoInstaller(object):
 
     @classmethod
     def __install__(cls):
-        target = cls.__target__(platform.system(), platform.machine())
         url = cls.__url__._replace(
-            path=f"release/v{cls.__latest__()}/{target}.zip"
+            path=f"release/{cls.__latest__()}/{cls.__target__()}.zip"
         ).geturl()
         cls.__progress__.create(
             cls.__string__(30000),
@@ -128,7 +125,7 @@ class DenoInstaller(object):
         if (
             (
                 (not self.__installed__()) or
-                (self.__current__() < self.__latest__())
+                (Version(self.__current__()) < Version(self.__latest__()))
             ) and
             self.__confirm__()
         ):
