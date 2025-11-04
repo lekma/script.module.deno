@@ -197,6 +197,10 @@ class Runtime(object):
 
 # ------------------------------------------------------------------------------
 
+def name():
+    if ((runtime := Runtime()).__installed__()):
+        return runtime.__runtime_name__
+
 def path():
     if ((runtime := Runtime()).__installed__()):
         return str(runtime.__path__)
