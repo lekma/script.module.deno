@@ -1,4 +1,4 @@
-# Addon Name: Deno JavaScript runtime
+# Addon Name: Deno JavaScript Runtime
 # Addon id: script.module.deno
 msgid ""
 msgstr ""
@@ -10,21 +10,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgctxt "#30000"
-msgid "Deno JavaScript runtime"
+msgid "Deno"
 msgstr ""
 
 msgctxt "#30001"
-msgid "Do you want to install Deno {}?"
+msgid "Deno JavaScript Runtime"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Downloading Deno {}..."
+msgid "Do you want to install {}?"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Installing Deno {}..."
+msgid "Installing {}..."
 msgstr ""
 
 msgctxt "#30004"
-msgid "Deno {} installed."
+msgid "Downloading {}..."
+msgstr ""
+
+msgctxt "#30005"
+msgid "{} installed."
+msgstr ""
+
+msgctxt "#30006"
+msgid "{} uninstalled."
 msgstr ""
