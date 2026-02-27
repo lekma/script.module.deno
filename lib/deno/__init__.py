@@ -155,9 +155,11 @@ class Runtime(object):
 
     @classmethod
     def __get_latest__(cls):
-        with urllib.request.urlopen(
-            cls.__url__._replace(path="release-latest.txt").geturl()
-        ) as response:
+        request = urllib.request.Request(
+            cls.__url__._replace(path="release-latest.txt").geturl(),
+            headers={"User-Agent": "Mozilla/5.0"}
+        )
+        with urllib.request.urlopen(request) as response:
             return response.read().decode("utf-8").strip()
 
     __systems__ = {
