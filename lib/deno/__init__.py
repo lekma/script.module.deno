@@ -16,6 +16,30 @@ from packaging.version import Version
 
 
 # ------------------------------------------------------------------------------
+
+__opener__ = urllib.request.build_opener()
+__opener__.addheaders = [("User-Agent", "Mozilla/5.0")]
+
+def opener(func):
+    def wrapper(*args, **kwargs):
+        __previous__ = urllib.request._opener
+        urllib.request.install_opener(__opener__)
+        try:
+            return func(*args, **kwargs)
+        finally:
+            urllib.request.install_opener(__previous__)
+    return wrapper
+
+@opener
+def __urlopen__(*args, **kwargs):
+    return urllib.request.urlopen(*args, **kwargs)
+
+@opener
+def __urlretrieve__(*args, **kwargs):
+    return urllib.request.urlretrieve(*args, **kwargs)
+
+
+# ------------------------------------------------------------------------------
 # Runtime
 
 class Runtime(object):
@@ -121,9 +145,7 @@ class Runtime(object):
         cls.__progress__.create(
             cls.__runtime_desc__, cls.__string__(30004).format(cls.__label__())
         )
-        path, _ = urllib.request.urlretrieve(
-            cls.__target__(), reporthook=cls.__update__
-        )
+        path, _ = __urlretrieve__(cls.__target__(), reporthook=cls.__update__)
         cls.__progress__.close()
         os.makedirs(cls.__path__.parent, exist_ok=True)
         with zipfile.ZipFile(path, "r") as zip_file:
@@ -155,11 +177,9 @@ class Runtime(object):
 
     @classmethod
     def __get_latest__(cls):
-        request = urllib.request.Request(
-            cls.__url__._replace(path="release-latest.txt").geturl(),
-            headers={"User-Agent": "Mozilla/5.0"}
-        )
-        with urllib.request.urlopen(request) as response:
+        with __urlopen__(
+            cls.__url__._replace(path="release-latest.txt").geturl()
+        ) as response:
             return response.read().decode("utf-8").strip()
 
     __systems__ = {
