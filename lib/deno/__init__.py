@@ -121,10 +121,17 @@ class Runtime(object):
 
     @classmethod
     def __outdated__(cls):
-        return (
-            cls.__version__(cls.__current__()) <
-            cls.__version__(cls.__latest__())
-        )
+        try:
+            return (
+                cls.__version__(cls.__current__()) <
+                cls.__version__(cls.__latest__())
+            )
+        except Exception as err:
+            cls.__log__(
+                f"Failed to check if outdated: {err.__class__.__name__}: {err}",
+                level=xbmc.LOGERROR
+            )
+            return False
 
     @classmethod
     def __confirm__(cls):
