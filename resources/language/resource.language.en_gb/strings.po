@@ -36,3 +36,11 @@ msgstr ""
 msgctxt "#30006"
 msgid "{} uninstalled."
 msgstr ""
+
+msgctxt "#30007"
+msgid "Failed to check if {} was outdated"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Failed to install {}"
+msgstr ""

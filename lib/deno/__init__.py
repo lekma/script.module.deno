@@ -7,6 +7,7 @@ import platform
 import shutil
 import stat
 import subprocess
+import traceback
 import urllib
 import zipfile
 
@@ -107,10 +108,10 @@ class Runtime(object):
                 cls.__version__(cls.__current__()) <
                 cls.__version__(cls.__latest__())
             )
-        except Exception as err:
+        except Exception:
+            msg = cls.__string__(30007).format(cls.__runtime_name__)
             cls.__log__(
-                f"Failed to check if outdated: {err.__class__.__name__}: {err}",
-                level=xbmc.LOGERROR
+                f"{msg}:\n{traceback.format_exc()}", level=xbmc.LOGERROR
             )
             return False
 
@@ -207,7 +208,16 @@ class Runtime(object):
                 ((not self.__installed__()) or self.__outdated__()) and
                 self.__confirm__()
             ):
-                self.__install__()
+                try:
+                    self.__install__()
+                except Exception:
+                    msg = self.__string__(30008).format(self.__runtime_name__)
+                    self.__log__(
+                        f"{msg}:\n{traceback.format_exc()}", level=xbmc.LOGERROR
+                    )
+                    xbmcgui.Dialog().notification(
+                        self.__addon_id__, msg, xbmcgui.NOTIFICATION_ERROR
+                    )
         finally:
             urllib.request.install_opener(_opener)
 
